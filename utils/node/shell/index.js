@@ -42,10 +42,12 @@ module.exports = {
       }
       
       setTimeout(() =>{
+        console.log('我来到这啦', global.PROJECT_ROOT_DIRECTORY, 'asdasd', child_process);
         
         let work_child_process= child_process.exec(order,{cwd:global.PROJECT_ROOT_DIRECTORY},(error) =>{
     
           if(error){
+            console.log('我发生了错误', error);
             
             reject({success:false,data:error})
       

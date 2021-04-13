@@ -1,1 +1,37 @@
-{"code":200,"message":"","data":{"01_index":{"entry":"D:/CBIM2.0_PROJECT/cbim_vue_template/src/pages/01_index/main.js","template":"D:/CBIM2.0_PROJECT/cbim_vue_template/src/pages/01_index/index.html","description":"01_index","filename":"01_index.html","title":"01_index","chunks":["01_index"]}},"success":true}
+{
+  "code": 200,
+  "message": "",
+  "data": {
+    "about": {
+      "entry": "/Users/lize/workingDirectory/CBIM2.0_PROJECT/cbim_vue_template/src/pages/about/about/main.js",
+      "template": "/Users/lize/workingDirectory/CBIM2.0_PROJECT/cbim_vue_template/src/pages/about/about/index.html",
+      "description": "about",
+      "filename": "about.html",
+      "title": "about",
+      "chunks": [
+        "about"
+      ]
+    },
+    "add": {
+      "entry": "/Users/lize/workingDirectory/CBIM2.0_PROJECT/cbim_vue_template/src/pages/index/add/main.js",
+      "template": "/Users/lize/workingDirectory/CBIM2.0_PROJECT/cbim_vue_template/src/pages/index/add/index.html",
+      "description": "add",
+      "filename": "add.html",
+      "title": "add",
+      "chunks": [
+        "add"
+      ]
+    },
+    "index": {
+      "entry": "/Users/lize/workingDirectory/CBIM2.0_PROJECT/cbim_vue_template/src/pages/index/index/main.js",
+      "template": "/Users/lize/workingDirectory/CBIM2.0_PROJECT/cbim_vue_template/src/pages/index/index/index.html",
+      "description": "index",
+      "filename": "index.html",
+      "title": "index",
+      "chunks": [
+        "index"
+      ]
+    }
+  },
+  "success": true
+}

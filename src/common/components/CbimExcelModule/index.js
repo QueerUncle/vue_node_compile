@@ -144,7 +144,39 @@ class ExcelClass {
     }, 100);
     
   }
-  
+  //下载csv文件
+  static dowloadCsvFile(obj){
+    console.log(obj);
+    let title = obj.title;
+    let data = obj.data;
+    let str = [];
+    str.push(obj.title.join(",")+"\n");
+    for(var i=0;i<data.length;i++){
+      let temp = [];
+      for(var j=0;j<title.length;j++){
+        temp.push(data[i][title[j]]);
+      }
+      str.push(temp.join(",")+"\n");
+    }
+    console.log(str,'titletitletitletitletitletitletitletitletitletitletitletitletitle');
+    let blob = new Blob(["\ufeff" + str.join('')], {
+      type: 'type: application/vnd.ms-excel;charset=ANSI'
+    });
+    var link = document.createElement("a");
+    link.innerHTML = 'export.csv';
+    link.download = 'export.csv';
+    link.href = URL.createObjectURL(blob);
+    let evt = document.createEvent('MouseEvents');
+    evt.initEvent('click', true, true);
+    link.dispatchEvent(evt);
+    // let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str.join(""));
+    // let downloadLink = document.createElement("a");
+    // downloadLink.href = uri;
+    // downloadLink.download = "export.csv";
+    // document.body.appendChild(downloadLink);
+    // downloadLink.click();
+    // document.body.removeChild(downloadLink);
+  }
   //导入文件
   importFile(fileObject,ExcelRegulation){
   
@@ -438,59 +470,56 @@ class ExcelClass {
   analysisDownloadDatas(Ary,format,fileName){
     
     try{
-  
-      let bookType = format == "xls" ? "biff2" : format;
-      
-      const wopts = { bookType:bookType, bookSST:false, type:'binary'};
-      
-      const wb = { SheetNames: [], Sheets: {}, Props: {} };
-      
-      if(Ary){
-        
-        for(let i = 0 ;i < Ary.length; i++){
-  
-          if(Ary[i] && Ary[i].length){
-    
-            for(let j = 0; j<Ary[i].length;j++){
-      
-              for(let o in Ary[i][j]){
-        
-                Ary[i][j][o] =  Ary[i][j][o]+'\n';
-        
-              }
-      
-            }
-    
+      if(format == 'csv'){
+        console.log(Ary[0])
+        if(Ary){
+          let obj = {
+            title:Object.keys(Ary[0][0]),
+            data:Ary[0],
           }
-          
-          wb.SheetNames.push('Sheet'+(i+1));
-          
-          wb.Sheets['Sheet'+(i+1)] = XLSX.utils.json_to_sheet(Ary[i])
-          
+          ExcelClass.dowloadCsvFile(obj);
         }
-        
+      }else{
+        let bookType = format == "xls" ? "biff2" : format ;
+        const wopts = { bookType:bookType, bookSST:true, type:'binary'};
+        // const wopts = { bookType:bookType, bookSST:true, type:'string'};
+        const wb = { SheetNames: [], Sheets: {}, Props: {} };
+        if(Ary){
+          for(let i = 0 ;i < Ary.length; i++){
+      
+            // if(Ary[i] && Ary[i].length){
+            //
+            //   for(let j = 0; j<Ary[i].length;j++){
+            //
+            //     for(let o in Ary[i][j]){
+            //
+            //       Ary[i][j][o] =  "\t"+Ary[i][j][o];
+            //
+            //     }
+            //
+            //   }
+            //
+            // }
+            wb.SheetNames.push('Sheet'+(i+1));
+            let t = XLSX.utils.json_to_sheet(Ary[i]);
+            // wb.Sheets['Sheet'+(i+1)] = XLSX.utils.sheet_to_csv(t);
+            wb.Sheets['Sheet'+(i+1)] = XLSX.utils.json_to_sheet(Ary[i]);
+          }
+        }
+        console.log(wb.Sheets,'wb.Sheets')
+        //创建二进制对象写入转换好的字节流
+        // let tmpDown =  new Blob([ExcelClass.s2ab(XLSX.write(wb, wopts))], { type: 'application/octet-stream',raw: true});
+        // let tmpDown =  new Blob([ExcelClass.s2ab(XLSX.write(wb, wopts))], { type: 'text/csv,charset=UTF-8',raw: true});
+        let tmpDown =  new Blob(["\ufeff"+XLSX.write(wb, wopts)], { type: 'application/octet-stream',raw: true});
+        ExcelClass.saveAs(tmpDown,`${fileName}.${format}`);
+        // 另一种下载的方式
+        // XLSX.writeFile(wb,`${fileName}.${format}`)
+        return {success:true};
       }
-      
-      //创建二进制对象写入转换好的字节流
-      
-      let tmpDown =  new Blob([ExcelClass.s2ab(XLSX.write(wb, wopts))], { type: 'application/octet-stream' });
-  
-      ExcelClass.saveAs(tmpDown,`${fileName}.${format}`);
-      
-      // 另一种下载的方式
-      // XLSX.writeFile(wb,`${fileName}.${format}`,wopts)
-      
-      return {success:true};
-  
     }
     catch (er) {
-      
       return {success:false,errorInfo:er}
-      
     }
-    
   }
-  
 }
-
 export default new ExcelClass();

@@ -16,6 +16,7 @@ const fs = require ("fs");
 const WriteFileFn = (src,path,writeContent,callBack) =>{
   
   fs.exists (src, (publicxists) => {
+    console.log(publicxists, 'asdasdasdasdasdasdasdasd');
     
     if(publicxists){
       
@@ -142,8 +143,10 @@ router.post('/package',(req, res) =>{
   WriteFileFn(witePath,`${witePath}/Page.json`,JSON.stringify(Obj),(e) =>{
     
     if(e){
+
+      console.log(req.body.type, 'req.body.type');
       
-      shells.sheelJs(req.body.type,true)
+      shells.sheelJs(req.body.type)
   
         .then((e) =>{
           

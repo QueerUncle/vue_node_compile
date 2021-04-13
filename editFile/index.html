@@ -25,12 +25,35 @@
 </html>
 
 <script>
+  function exportCsv(obj){
+    //title ["","",""]
+    var title = obj.title;
+    //titleForKey ["","",""]
+    var titleForKey = obj.titleForKey;
+    var data = obj.data;
+    var str = [];
+    str.push(obj.title.join(",")+"\n");
+    for(var i=0;i<data.length;i++){
+      var temp = [];
+      for(var j=0;j<titleForKey.length;j++){
+        temp.push(data[i][titleForKey[j]]);
+      }
+      str.push(temp.join(",")+"\n");
+    }
+    var uri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(str.join(""));
+    var downloadLink = document.createElement("a");
+    downloadLink.href = uri;
+    downloadLink.download = "export.csv";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
 $(function(){
     let num = [1]
     var setChildNode = function(num){
         let len = document.querySell
       let childNode = '<div class = "childNode childNodelz">' +
-        '<div class = "imgWrap" data-num = '+i+'>' +
+        '<div class = "imgWrap">' +
         '<img src="" alt="">' +
         '</div>' +
         '<div class = "selectWwrap">' +
@@ -46,7 +69,7 @@ $(function(){
         '<input type="text">' +
         '</div>' +
         '<div class = "delWrap">' +
-        '<span class = "delBtn" data-num = '+i+'>删除</span>' +
+        '<span class = "delBtn">删除</span>' +
         '</div>'
       '</div>'
       $(".itemWrap").append(childNode);
@@ -62,10 +85,25 @@ $(function(){
     let index = $(this).data("num");
     num.splice(num.indexOf(index),1);
     setChildNode(num);
+
   })
-//  $(".delBtn").click(() =>{
-////        console.log($(".delBtn").parents(".childNode"));
-////    $(".delBtn").parents(".childNode").remove()
-//  })
+
+  $(".saveBtn").click(() =>{
+    exportCsv({
+      title:["第一列","第二列"],
+      titleForKey:["num1","num2"],
+      data:[
+        {
+          num1:"123",
+          num2:"fff"
+        },{
+          num1:"123",
+          num2:"fff"
+        },{
+          num1:"123",
+          num2:"fff"
+        }]
+    });
+  })
 })
 </script>

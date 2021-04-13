@@ -1,6 +1,6 @@
 <!--
- * @Descripttion: 
- * @version: 
+ * @Descripttion:
+ * @version:
  * @Author: lize
  * @Date: 2019-07-22 15:46:41
  * @LastEditors: lize
@@ -15,7 +15,7 @@
 
     <div>
 
-        我是Index页面
+        我是Index页面的add单页
 
     </div>
 
@@ -32,7 +32,7 @@
 </template>
 <script>
 
-  // import Excel from '@/common/components/CbimExcelModule/index.js'
+  // import Excel from '@/common/components/CbimExcelModule/service.js'
   import Excel from 'vue-excel-plugin'
     export default {
         data () {

@@ -1,6 +1,6 @@
 <!--
- * @Descripttion: 
- * @version: 
+ * @Descripttion:
+ * @version:
  * @Author: lize
  * @Date: 2019-07-22 15:46:41
  * @LastEditors: lize
@@ -28,12 +28,16 @@
     </label>
 
     <div style="height:40px;border: 1px solid gray;width: 100px;display: flex;align-items: center;justify-content: center;cursor: pointer" @click = "downloadFile">下载</div>
+
+    <div style="margin-top: 50px;">
+      <button @click = "linkTo">跳转</button>
+    </div>
   </div>
 </template>
 <script>
 
-  // import Excel from '@/common/components/CbimExcelModule/index.js'
-  import Excel from 'vue-excel-plugin'
+   import Excel from '@/common/components/CbimExcelModule/index.js'
+//  import Excel from 'vue-excel-plugin'
     export default {
         data () {
             return {
@@ -44,7 +48,6 @@
             this.initialize();
         },
         methods: {
-
           //初始化
           initialize(){
 
@@ -73,6 +76,11 @@
           },
 
           downloadFile(){
+              for(let i = 0; i<this.excelAry.length;i++){
+                  for(let j in this.excelAry[i]){
+                      j = '"' +j + '"'
+                  }
+              }
 
             Excel.downloadExcel('csv',this.excelAry,'测试下载')
 
@@ -88,8 +96,11 @@
 
               })
 
-          }
-
+          },
+          linkTo(){
+//              this.$router.push({path:'/about',query:{flag:false}});
+              window.open('http://localhost:8990/#/about?flag=false')
+          },
         }
     }
 
