@@ -7,22 +7,17 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+node ServerCompile/serverCompile.js -c serve
 ```
 
 ### Compiles and minifies for production
 ```
-npm run build
+node ServerCompile/serverCompile.js -c build
 ```
 
-### Run your tests
+### help
 ```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
+node ServerCompile/serverCompile.js -h
 ```
 
 ### Customize configuration
