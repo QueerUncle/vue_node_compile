@@ -147,64 +147,71 @@ class PackageTool {
         packageTool =  new PackageTool();
         moduleInfo = packageTool.moduleInfo;
     };
-    // sheel函数
-    const shellModule = (type, mode) =>{
+    // shell函数
+    const shellModule = (type, mode, spinner) =>{
         return new Promise((resolve,reject) =>{
-            // let order = !type || type === 'development'? `npx vue-cli-service` : type === 'production' ? `npx vue-cli-service build` : `npx vue-cli-service build --mode ${type}`;
             let order = `npx vue-cli-service ${type}`;
             if (mode) {
                 order += ` --mode=${mode}`
             }
-            setTimeout(() =>{
-                let work_child_process= child_process.exec(order,{cwd:process.cwd()},(error) =>{
-                    if(error){
-                        reject({success:false,data:error})
-                    }
-                });
-                let progressBar = '';
-                work_child_process.stdout.on('data',(stdout) =>{
-                    progressBar = !progressBar ? 2 : 0;
-                    if(!progressBar){
-                        setTimeout(() =>{
-                            resolve({success:true,data:stdout})
-                        },1000)
-                    }else{
-                        progressBar = 0;
-                    }
-                    console.log(`stdout ${stdout}`)
-                });
-                work_child_process.stderr.on('data',(stderr) =>{
-                    progressBar = 1;
-                });
-                work_child_process.on('exit',(close) =>{
-                    reject({success:true,data:'close'})
-                });
-            },500);
+            const work_child_process= child_process.exec(order,{cwd:process.cwd()},(error) =>{
+                if(error){
+                    reject({success:false,data:error})
+                    throw new Error(`${error}`);
+                }
+            });
+            work_child_process.stdout.on('data',(stdout) => {
+                stdout ? console.log(stdout): false
+                if (stdout && stdout.includes('DONE  Build complete.')) {
+                    resolve({ success: true })
+                }
+            });
+            work_child_process.stderr.on('data',(stderr) =>{
+                spinner.text = stderr;
+                if (stderr.includes("100%")) {
+                    resolve({ success: true })
+                }
+            });
+            work_child_process.on('exit',(close) => reject({success:true,data:'close'}));
         })
     };
     // 打包函数
     const handlePack = (mode) =>{
-        if (packageNum < packModule.length) {
-            let nowModule = packModule[packageNum];
+        const spinner = ora().start('run build');
+        const recursive = () => {
+            const nowModule = packModule[packageNum];
+            spinner.text = `开始打包${nowModule.moduleName}模块`;
             WriteFileFn("./utils",pageInfoPath,JSON.stringify(nowModule));
-            shellModule('build', mode).then(() =>{
-                packageNum++;
-                handlePack(mode);
-            })
+            shellModule('build', mode, spinner).then((e) =>{
+                if (e.success) {
+                    spinner.text = `${nowModule.moduleName}模块打包完毕.`;
+                    packageNum++;
+                    if (packageNum >= packModule.length){
+                        spinner.stop();
+                    }
+                    recursive();
+                }
+            }).catch(() => false);
         }
+        if (packageNum >= packModule.length) {
+            spinner.stop();
+            console.log('打包完毕');
+            return;
+        }
+        recursive();
     };
-    // 日东函数
+    // 运行函数
     const handleRun = (mode) => {
         WriteFileFn("./utils", pageInfoPath, JSON.stringify(packageTool.pageInfo)); // 写入页面信息
-        shellModule('serve', mode).then((e) => console.log('启动完毕'))
+        const spinner = ora().start('run serve');
+        shellModule('serve', mode, spinner).then(() => spinner.stop()).catch(() => false);
     }
     // 更新单叶信息
     const handleUpdate = () => {
-        const progressBar = ora('更新页面信息中......');
-        progressBar.start();
+        const spinner = ora('更新页面信息中......').start();
         Initialize();
         setTimeout(() =>{
-            progressBar.stop();
+            spinner.stop();
             log('更新完成')
         }, 500);
     }
