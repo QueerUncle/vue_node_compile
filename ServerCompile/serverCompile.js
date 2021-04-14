@@ -206,7 +206,7 @@ class PackageTool {
         const spinner = ora().start('run serve');
         shellModule('serve', mode, spinner).then(() => spinner.stop()).catch(() => false);
     }
-    // 更新单叶信息
+    // 更新单页信息
     const handleUpdate = () => {
         const spinner = ora('更新页面信息中......').start();
         Initialize();
