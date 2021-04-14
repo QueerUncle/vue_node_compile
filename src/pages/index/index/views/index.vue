@@ -32,6 +32,7 @@
     <div style="margin-top: 50px;">
       <button @click = "linkTo">跳转</button>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 <script>
@@ -98,8 +99,15 @@
 
           },
           linkTo(){
-//              this.$router.push({path:'/about',query:{flag:false}});
-              window.open('http://localhost:8990/#/about?flag=false')
+             this.$router.push(
+                 {
+                   path:'/about',
+                   query:{
+                     flag:false
+                   }
+                }
+             );
+              // window.open('http://localhost:8990/#/about?flag=false')
           },
         }
     }
