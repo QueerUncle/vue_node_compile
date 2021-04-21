@@ -202,7 +202,15 @@ class PackageTool {
     };
     // 运行函数
     const handleRun = (mode) => {
-        WriteFileFn("./utils", pageInfoPath, JSON.stringify(packageTool.pageInfo)); // 写入页面信息
+        const pageInfo = {...packageTool.pageInfo};
+        pageInfo.pages = {};
+        for (let i = 0; i < packModule.length; i += 1) {
+           Object.keys(packModule[i].pages).forEach((item) => {
+               packModule[i].pages[item].filename = `${packModule[i].moduleName}-${item}.html`;
+               pageInfo.pages[`${packModule[i].moduleName}-${item}`] = packModule[i].pages[item];
+           })
+        }
+        WriteFileFn("./utils", pageInfoPath, JSON.stringify(pageInfo)); // 写入页面信息
         const spinner = ora().start('run serve');
         shellModule('serve', mode, spinner).then(() => spinner.stop()).catch(() => false);
     }

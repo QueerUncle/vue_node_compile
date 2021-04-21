@@ -22,7 +22,7 @@ export default new Router({
     },
     {
 
-      path:'/about',
+      path:'/index-about',
 
       name:'about',
 

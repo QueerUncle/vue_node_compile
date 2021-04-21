@@ -3,11 +3,11 @@
  -->
 <template>
 
-  <div class = "IndexPage">
+  <div class = "Test-index-wrap">
 
     <div>
 
-        我是about页面
+        我是Test-index页面
 
     </div>
 

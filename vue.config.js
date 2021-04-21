@@ -34,7 +34,7 @@ module.exports = {
   // pages:utils.subpackage().pages, //单页对象。  utils.getPages() 自动生成多页对象。
   // pages:utils.getPagesByGUI (), //单页对象。  utils.getPages() 自动生成多页对象。
   devServer:{  //该项参数较多，具体可参考vue_cli3的API,或者webpack的API
-    index:'index-index.html',
+    // index:'index-index.html',
     port:8990, //项目启动监听的端口号，
     host:'0.0.0.0', //指定要使用的主机。默认情况下这是localhost. 如果您希望外部可以访问您的服务器，请设置为 0.0.0.0
     open:false, //配置是否默认打开浏览器，默认 false,

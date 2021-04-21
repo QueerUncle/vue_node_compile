@@ -1,8 +1,8 @@
 /*
     Vue组件 -- 跨页面保存传输变量模块
     一个VUE中不支持创建多实例, 只能创建单一实例
-    注意: 
-    1. 
+    注意:
+    1.
     2. 请用 '$SV.read.变量名' 来读取全局数据
     3. 请用 '$SV.write.变量名' 来写入全局数据
 */
@@ -309,7 +309,7 @@ let __SSV__ = (function() {
         let n = document.querySelectorAll('iframe').length
         if (n < 1) {
             let node = document.createElement('iframe')
-            node.src = "about:blank"
+            node.src = "index:blank"
             node.name = "OnStorageOpen"
             node.style.display = "none"
 

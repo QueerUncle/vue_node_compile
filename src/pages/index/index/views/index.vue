@@ -11,11 +11,11 @@
  -->
 <template>
 
-  <div class = "IndexPage">
+  <div class = "Index-index-Page">
 
     <div>
 
-        我是Index页面
+        我是Inde-index页面
 
     </div>
 
@@ -101,7 +101,7 @@
           linkTo(){
              this.$router.push(
                  {
-                   path:'/about',
+                   path:'/index',
                    query:{
                      flag:false
                    }

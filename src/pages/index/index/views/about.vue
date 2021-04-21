@@ -2,7 +2,7 @@
  -  2019/9/17  lize
  -->
 <template>
-  <div>我是index单页的about组件</div>
+  <div class = "index-about-page">我是index-about组件</div>
 </template>
 
 <script>

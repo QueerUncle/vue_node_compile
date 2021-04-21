@@ -11,7 +11,7 @@
  -->
 <template>
 
-  <div class = "IndexPage">
+  <div class = "Index-Add-Page">
 
     <div>
 

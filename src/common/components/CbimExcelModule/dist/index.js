@@ -4694,14 +4694,14 @@ function write_manifest(manifest) {
 /* Part 3 Section 6 Metadata Manifest File */
 function write_rdf_type(file, res, tag) {
 	return [
-		'  <rdf:Description rdf:about="' + file + '">\n',
+		'  <rdf:Description rdf:index="' + file + '">\n',
 		'    <rdf:type rdf:resource="http://docs.oasis-open.org/ns/office/1.2/meta/' + (tag || "odf") + '#' + res + '"/>\n',
 		'  </rdf:Description>\n'
 	].join("");
 }
 function write_rdf_has(base, file) {
 	return [
-		'  <rdf:Description rdf:about="' + base + '">\n',
+		'  <rdf:Description rdf:index="' + base + '">\n',
 		'    <ns0:hasPart xmlns:ns0="http://docs.oasis-open.org/ns/office/1.2/meta/pkg#" rdf:resource="' + file + '"/>\n',
 		'  </rdf:Description>\n'
 	].join("");
@@ -21209,140 +21209,140 @@ const  Regular = {
   },
   //验证是否是汉字、数字、字母
     isChineseAndNumAndLetter(value){
-    
+
       let obj = {
-        
+
         errorInfo:'',
-        
+
         flag:true,
-        
+
       };
-      
+
       let reg = /^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$/
-      
+
       if(!reg.test(value)){
-      
+
         obj.flag = false;
-  
+
         obj.errorInfo = '只能输入汉字、数字、字母'
-      
+
       }
-      
+
       return obj;
-    
+
     },
   //是否重复
   isRepetition(value,Ary){
-    
+
     let obj = {
-  
+
       flag:true,
-  
+
       errorInfo:''
-  
+
     };
-    
+
     if(Ary.filter(i =>i === value).length>1){
-      
+
       obj.flag = false;
-      
+
       obj.errorInfo = "数据重复"
-      
+
     }
-    
+
     return obj
-  
+
   },
-  
+
   //长度小于40
   len40(value){
-    
+
     let obj = {
-    
+
       errorInfo:'',
-    
+
       flag:true
-    
+
     };
-  
+
     if(value.length>40){
-    
+
       obj.flag = false;
-    
+
       obj.errorInfo = '长度不能超过40'
-    
+
     }
-  
+
     return obj;
-  
+
   },
   //长度小于50
   len50(value){
-  
+
     let obj = {
-    
+
       errorInfo:'',
-    
+
       flag:true
-    
+
     };
-  
+
     if(value.length>50){
-    
+
       obj.flag = false;
-    
+
       obj.errorInfo = '长度不能超过50'
-    
+
     }
-  
+
     return obj;
-  
+
   },
   //长度小于10
   len10(value){
 
     let l = this.gblen(value);
-    
+
     let obj = {
-      
+
       errorInfo:'',
-      
+
       flag:true
-      
+
     };
-    
+
     if(l>10){
-  
+
       obj.flag = false;
-  
+
       obj.errorInfo = '长度不能超过10'
-      
+
     }
-    
+
     return obj;
 
   },
   //不为为空
   notNull(value){
-  
+
     let obj = {
-    
+
       errorInfo:'',
-    
+
       flag:true
-    
+
     };
 
     let t = value.length;
 
     if(t == '' || t == null){
-      
+
       obj.flag = false;
-      
+
       obj.errorInfo = "此处不能为空";
-      
+
     }
-    
+
     return obj
 
   },
@@ -21350,23 +21350,23 @@ const  Regular = {
   isEmail(value){
 
     let t = value;
-  
+
     let obj = {
-    
+
       errorInfo:'',
-    
+
       flag:true
-    
+
     };
 
     let reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
-    
+
     if(!reg.test(t)){
-      
+
       obj.flag = false;
-      
+
       obj.errorInfo = "请输入正常的邮箱！";
-      
+
     }
 
     return obj;
@@ -21377,25 +21377,25 @@ const  Regular = {
   isPhone(value){
 
     let t = value;
-  
+
     let obj = {
-    
+
       errorInfo:'',
-    
+
       flag:true
-    
+
     };
-  
+
     let reg = new RegExp(/^1[34578]\d{9}$/);
-  
+
     if(!reg.test(t)){
-  
+
       obj.flag = false;
-  
+
       obj.errorInfo = "请输入正常的手机号！";
-      
+
     }
-    
+
     return obj;
 
   },
@@ -21404,23 +21404,23 @@ const  Regular = {
   isMob(value){
 
     let t = value;
-  
+
     let obj = {
-    
+
       errorInfo:'',
-    
+
       flag:true
-    
+
     };
 
     let reg = new RegExp(/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/);
-    
+
     if(!reg.test(t)){
-  
+
       obj.flag = false;
-  
+
       obj.errorInfo = "请输入正常的固定电话！";
-      
+
     }
 
     return obj;
@@ -23258,7 +23258,7 @@ try {
 	if (typeof window === "object") g = window;
 }
 
-// g can still be undefined, but nothing to do about it...
+// g can still be undefined, but nothing to do index it...
 // We return undefined, instead of nothing here, so it's
 // easier to handle this case. if(!global) { ...}
 
@@ -23279,19 +23279,19 @@ module.exports = g;
 const fs = {
   //多个sheet验证及改变数据结构
   pluralSheerAssemblyData(dataAry,regulationAry,succColor,errColor){
-    
+
     let Sheet_tag = dataAry;
 
     let RERURNARY = [];
-    
+
     for(let sheet = 0; sheet<Sheet_tag.length;sheet++){
 
       let list = Sheet_tag[sheet];
 
       let newAry = [];
-  
+
       let lineDatas = {};
-  
+
       let newhead = list.splice(0,1);
 
       let hObj = {};
@@ -23338,17 +23338,17 @@ const fs = {
       for( let i in head){
 
         H.push(i);
-  
+
         lineDatas[i] = [];
-        
+
         for(let j = 0; j<list.length;j++){
-  
+
           lineDatas[i].push(list[j][i]!=undefined && list[j][i]!=null ? list[j][i] : "" );
-          
+
         }
-        
+
       }
-      
+
       for( let i = 0; i<list.length; i++){
 
         let index = i;
@@ -23393,7 +23393,7 @@ const fs = {
             row:index,
 
             col:c,
-            
+
             errorFrom:'',
 
             sheet:Number(sheet)+1,
@@ -23401,17 +23401,17 @@ const fs = {
             color:succColor,
 
             flag:true,
-  
+
             errorInfo:'',
 
             innerText:list[i][km] ? list[i][km] : "",
-            
+
             isVerify:true,
-            
+
             lineDatas:lineDatas[km]
 
           };
-          
+
           let regObj = {
 
             name:list[i][km] ? list[i][km] : "",
@@ -23421,7 +23421,7 @@ const fs = {
             sheet:Number(sheet)+1,
 
             row:obj.row,
-  
+
             lineDatas:lineDatas[km]
 
           };
@@ -23447,19 +23447,19 @@ const fs = {
             }
 
           }
-  
+
           let verifierInfo = fs.verifier(regulationAry,regObj);
-          
+
           if(!verifierInfo.flag){
-  
+
             obj.color = errColor;
-  
+
             obj.flag = false;
-            
+
             obj.errorInfo = verifierInfo.errorInfo,
-            
+
             obj.errorFrom = 'client'
-            
+
           }
 
           Ary.push(obj);
@@ -23499,15 +23499,15 @@ const fs = {
     let sheet = 'sheet'+regobj.sheet;
 
     let reg = [];
-    
+
     let lineDatas = regobj.lineDatas;
-    
+
     let obj = {
-      
+
       flag:true,
-  
+
       errorInfo:''
-      
+
     };
 
     // let flag = true;
@@ -23525,23 +23525,23 @@ const fs = {
               reg = regulationAry[i].info[j].reg;
 
               if(name!=null || name!=undefined){
-                
+
                 for( let k = 0; k<reg.length; k++){
 
                   obj= _Regular_Tmplate__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"][reg[k].name](name,lineDatas);
-                  
+
                   if(!obj.flag){
-                    
+
                     return obj;
-                    
+
                   }
 
                 }
 
               }else{
-                
+
                 obj.flag = false;
-                
+
               }
 
             }
@@ -23559,118 +23559,118 @@ const fs = {
   },
   //判断文件编码是否是UTF-8
   isUTF8(bytes) {
-    
+
     let i = 0;
-    
+
     while (i < bytes.length) {
-      
+
       // ASCII
       if (( bytes[i] == 0x09 || bytes[i] == 0x0A || bytes[i] == 0x0D || (0x20 <= bytes[i] && bytes[i] <= 0x7E))) {
-        
+
           i += 1;
-          
+
           continue;
-        
+
       }
       // non-overlong 2-byte
       if (((0xC2 <= bytes[i] && bytes[i] <= 0xDF) && (0x80 <= bytes[i + 1] && bytes[i + 1] <= 0xBF))) {
-        
+
           i += 2;
-          
+
           continue;
-        
+
       }
       if ((// excluding overlongs
-          
+
           bytes[i] == 0xE0 &&
-          
+
           (0xA0 <= bytes[i + 1] && bytes[i + 1] <= 0xBF) &&
-          
+
           (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF)
-          
+
         ) ||
-        
+
         (// straight 3-byte
-          
+
           ((0xE1 <= bytes[i] && bytes[i] <= 0xEC) ||
-          
+
           bytes[i] == 0xEE ||
-          
+
           bytes[i] == 0xEF) &&
-          
+
           (0x80 <= bytes[i + 1] && bytes[i + 1] <= 0xBF) &&
-          
+
           (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF)
-          
+
         ) ||
-        
+
         (// excluding surrogates
-          
+
           bytes[i] == 0xED &&
-          
+
           (0x80 <= bytes[i + 1] && bytes[i + 1] <= 0x9F) &&
-          
+
           (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF)
-          
+
         )
-        
+
       ) {
-        
+
         i += 3;
-        
+
         continue;
-        
+
       }
       if ((// planes 1-3
-          
+
           bytes[i] == 0xF0 &&
-          
+
           (0x90 <= bytes[i + 1] && bytes[i + 1] <= 0xBF) &&
-          
+
           (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF) &&
-          
+
           (0x80 <= bytes[i + 3] && bytes[i + 3] <= 0xBF)
-          
+
         ) ||
-        
+
         (// planes 4-15
-          
+
           (0xF1 <= bytes[i] && bytes[i] <= 0xF3) &&
-          
+
           (0x80 <= bytes[i + 1] && bytes[i + 1] <= 0xBF) &&
-          
+
           (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF) &&
-          
+
           (0x80 <= bytes[i + 3] && bytes[i + 3] <= 0xBF)
-          
+
         ) ||
-        
+
         (// plane 16
-          
+
           bytes[i] == 0xF4 &&
-          
+
           (0x80 <= bytes[i + 1] && bytes[i + 1] <= 0x8F) &&
-          
+
           (0x80 <= bytes[i + 2] && bytes[i + 2] <= 0xBF) &&
-          
+
           (0x80 <= bytes[i + 3] && bytes[i + 3] <= 0xBF)
-          
+
         )
-        
+
       ) {
-        
+
         i += 4;
-        
+
         continue;
-        
+
       }
-      
+
       return false;
-      
+
     }
-    
+
     return true;
-    
+
   },
   //单个sheet 验证及改变数据结构
   assemblyData(dataAry,regulationAry,succColor,errColor){
@@ -23773,7 +23773,7 @@ const fs = {
           row:index,
 
           col:c,
-  
+
           errorInfo:'',
 
           color:succColor,
@@ -23815,17 +23815,17 @@ const fs = {
           }
 
         }
-  
+
         let verifierInfo = fs.verifier(regulationAry,regObj);
-  
+
         if(!verifierInfo.flag){
-    
+
           obj.color = errColor;
-    
+
           obj.flag = false;
-          
+
           obj.errorInfo = verifierInfo.errorInfo
-    
+
         }
 
         Ary.push(obj);
@@ -23851,168 +23851,168 @@ const fs = {
   },
   //多个sheet（简版）验证及改变数据结构
   pluralSheerAssemblyDataSimple(dataAry,regulationAry,succColor,errColor){
-    
+
     let Sheet_tag = dataAry;
-    
+
     let RERURNARY = [];
-    
+
     for(let sheet = 0; sheet<Sheet_tag.length;sheet++){
-      
+
       let list = Sheet_tag[sheet];
-      
+
       let newAry = [];
-      
+
       let newhead = list.splice(0,1);
-      
+
       let hObj = {};
-      
+
       //处理头部
       for(let i in newhead[0]){
-        
+
         if(newhead[0][i].indexOf("（") >-1){
-          
+
           let bef = newhead[0][i].substring(0,newhead[0][i].indexOf("（"));
-          
+
           let aft = newhead[0][i].substring(newhead[0][i].indexOf("（"),newhead[0][i].length);
-          
+
           newhead[0][i] = "<font color = 'red'>"+bef + "</font><br/>"+aft;
-          
+
         }else if(newhead[0][i].indexOf("(") >-1){
-          
+
           let bef = newhead[0][i].substring(0,newhead[0][i].indexOf("("));
-          
+
           let aft = newhead[0][i].substring(newhead[0][i].indexOf("("),newhead[0][i].length);
-          
+
           newhead[0][i] = "<font color = 'red'>"+bef + "</font><br/>"+aft;
-          
+
         }
-        
+
         if(i.indexOf('__EMPTY') > -1){
-          
+
           delete newhead[0][i];
-          
+
         }else{
-          
+
           if(!_Regular_Tmplate__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"].isChinese(i)){
-            
+
             console.log(i);
-            
+
             return "000000"
-            
+
           }
-          
+
         }
-        
+
         hObj[i] = i;
-        
+
       }
-      
+
       newhead.unshift(hObj)
-      
+
       let head = newhead[0];
-      
+
       let H = [];
-      
+
       for( let i in head){
-        
+
         H.push(i);
-        
+
       }
-      
+
       for( let i = 0; i<list.length; i++){
-        
+
         let index = i;
-        
+
         let Ary = [];
-        
+
         let c = 0;
-        
+
         //处理表格中的空值；
         for( let j = 0; j<H.length; j++){
-          
+
           if(list[i][H[j]] == undefined){
-            
+
             let t = JSON.stringify(list[i]).slice(1);
-            
+
             let g = t.substring(0,t.length-1)
-            
+
             let hj = g.split(',')
-            
+
             let r = '"'+H[j]+'":'+ null;
-            
+
             hj.splice(j,0,r);
-            
+
             hj[0] = "{" + hj[0];
-            
+
             hj[hj.length-1] = hj[hj.length-1] + "}"
-            
+
             list[i] = JSON.parse(hj.join(","));
-            
+
           }
-          
+
         }
-        
+
         //  变成二维数组并添加属性
         for(let km in list[i]){
-          
+
           let obj = {
-            
+
             name:list[i][km] ? list[i][km] : "",
-            
+
             key: km,
-            
+
             row:index,
-            
+
             col:c,
-            
+
             sheet:Number(sheet)+1,
-            
+
             color:succColor,
-            
+
             flag:true,
-            
+
             errorInfo:'',
-            
+
             innerText:list[i][km] ? list[i][km] : "",
-            
+
             isVerify:true
-            
+
           };
-          
+
           let regObj = {
-            
+
             name:list[i][km] ? list[i][km] : "",
-            
+
             col:obj.col,
-            
+
             sheet:Number(sheet)+1,
-            
+
             row:obj.row,
-            
+
           };
-          
+
           if(list[i][km]!=null){
-            
+
             if(typeof list[i][km] == "number"){
-              
+
               obj.name = Number(String(list[i][km]).replace(/\s+/g,""));
-              
+
               obj.innerText = Number(String(list[i][km]).replace(/\s+/g,""));
-              
+
               regObj.name = Number(String(list[i][km]).replace(/\s+/g,""));
-              
+
             }else{
-              
+
               obj.name = list[i][km].replace(/\s+/g,"");
-              
+
               obj.innerText = list[i][km].replace(/\s+/g,"");
-              
+
               regObj.name = list[i][km].replace(/\s+/g,"");
-              
+
             }
-            
+
           }
-          
+
           // let flag = fs.verifier(regulationAry,regObj)
           //
           // if(!flag){
@@ -24022,45 +24022,45 @@ const fs = {
           //   obj.flag = false;
           //
           // }
-          
+
           let verifierInfo = fs.verifier(regulationAry,regObj);
-          
+
           if(!verifierInfo.flag){
-            
+
             obj.color = errColor;
-            
+
             obj.flag = false;
-            
+
             obj.errorInfo = verifierInfo.errorInfo
-            
+
           }
-          
+
           Ary.push(obj);
-          
+
           c++;
-          
+
         }
-        
+
         newAry.push(Ary);
-        
+
       }
-      
+
       let obj = {
-        
+
         tHead:newhead,
-        
+
         tBody:newAry
-        
+
       }
-      
+
       RERURNARY.push(obj);
-      
+
     }
-    
+
     return RERURNARY;
-    
+
   },
-  
+
 };
 /* harmony default export */ __webpack_exports__["a"] = (fs);
 
@@ -27116,19 +27116,19 @@ __webpack_require__.r(__webpack_exports__);
  */
 /**
  * @name : 导入导出Excel插件封装组件
- 
+
  * @Depend  xlsx、cptable、iview
- 
+
  * @desc 1、支持导入 csv、xls、xlsx等格式的表格文件。
- 
+
         2、支持每列数据验证（一列可支持多个验证，但错误信息只会显示一条，不会拼接）。
- 
+
         3、支持下载 csv、xls、xlsx等格式的表格文件。
- 
+
  * @Author: lize
- 
+
  * @date : 2019/7/15
- 
+
  * @methods importFile function (Object fileObject, Object ExcelRegulation)
  *
  *          该方法为excel导入   fileObject 为file对象    传入 event.target.files[0]
@@ -27178,7 +27178,7 @@ __webpack_require__.r(__webpack_exports__);
  *                              filename 文件名称
  *
  *              正确时按返回 true   错误时返回  错误信息
- 
+
  * @example 可参考同级下的example.vue 调用法法
  *
  */
@@ -31099,7 +31099,7 @@ var Inflate = function(options) {
     opt.windowBits += 32;
   }
 
-  // Gzip header has no info about windows size, we can do autodetect only
+  // Gzip header has no info index windows size, we can do autodetect only
   // for deflate. So, if window size not set, force it to max when gzip possible
   if ((opt.windowBits > 15) && (opt.windowBits < 48)) {
     // bit 3 (16) -> gzipped data
@@ -32129,7 +32129,7 @@ function fill_window(s) {
        at the expense of memory usage). We slide even when level == 0
        to keep the hash table consistent if we switch back to level > 0
        later. (Using level 0 permanently is not an optimal usage of
-       zlib, so we don't care about this pathological case.)
+       zlib, so we don't care index this pathological case.)
        */
 
       n = s.hash_size;
@@ -34164,7 +34164,7 @@ function inflateInit(strm) {
  fixed code decoding.  Normally this returns fixed tables from inffixed.h.
  If BUILDFIXED is defined, then instead this routine builds the tables the
  first time it's called, and returns those tables the first time and
- thereafter.  This reduces the size of the code by about 2K bytes, in
+ thereafter.  This reduces the size of the code by index 2K bytes, in
  exchange for a little execution time.  However, BUILDFIXED should not be
  used for threaded applications, since the rewriting of the tables and virgin
  may not be thread-safe.
@@ -36968,7 +36968,7 @@ function ZStream() {
   this.msg = ''/*Z_NULL*/;
   /* not visible by applications */
   this.state = null;
-  /* best guess about the data type: binary or text */
+  /* best guess index the data type: binary or text */
   this.data_type = 2/*Z_UNKNOWN*/;
   /* adler32 value of the uncompressed data */
   this.adler = 0;
